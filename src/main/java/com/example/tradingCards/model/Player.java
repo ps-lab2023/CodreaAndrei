@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +26,8 @@ public class Player {
     private String league;
     private String team;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    private Card card;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "player")
+    private List<Card> cardList;
 
 
 }

@@ -16,11 +16,18 @@ public class Market {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User owner;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card card;
 
+
     private Double price;
+
+
+
+
 
 
 }

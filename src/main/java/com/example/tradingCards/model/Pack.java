@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -22,10 +23,12 @@ public class Pack {
     private String name;
     private String description;
     private Integer size;
-    private Double chance;
     private Double price;
 
     @ManyToMany
-    private List<Card> cardList;
-
+    @JoinTable(
+        name = "pack_content",
+        joinColumns = @JoinColumn(name = "id_pack"),
+        inverseJoinColumns = @JoinColumn(name = "id_card"))
+    List<Card> cardList;
 }

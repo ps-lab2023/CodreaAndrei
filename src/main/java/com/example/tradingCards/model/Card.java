@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.lang.management.PlatformLoggingMXBean;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,28 +21,36 @@ public class Card {
 
     private String type;
     private String position;
-    /*private String skills;
-    private String weakFoot;
-    private String foot;
+    /*
     private Integer pace;
     private Integer dribbling;
     private Integer shoot;
     private Integer defending;
     private Integer passing;
     private Integer physical;*/
+    private  Double overall;
     private Double minPrice;
     private Double maxPrice;
+    private Double chance;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private User owner;
+    @ManyToMany(mappedBy = "ownedCards")
+    private List<User> owners;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany (mappedBy = "cardList")
     private List<Pack> packList;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Player player;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Market market;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Market> listing;
+
+    public void addToPackList(Pack pack){
+        packList.add(pack);
+    }
+
+    public void addToOwners(User user){
+        owners.add(user);
+    }
 
 }

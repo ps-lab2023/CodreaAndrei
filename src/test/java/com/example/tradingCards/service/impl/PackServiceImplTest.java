@@ -23,14 +23,14 @@ class PackServiceImplTest {
     @Test
     void createPack() {
 
-        packService.createPack("Test", "asd", 2, 0.3, 500.0);
+        packService.createPack("Test", "asd", 2, 500.0);
         assertThat(packRepository.findFirstByName("Test")).isNotNull();
 
     }
 
     @Test
     void deletePack() {
-        packService.createPack("Test2", "asd", 2, 0.3, 500.0);
+        packService.createPack("Test2", "asd", 2,500.0);
         packService.deletePack("Test2");
         assertThat(packRepository.findFirstByName("Test2")).isNull();
     }
