@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,8 +33,18 @@ public class User {
     private Type role;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "id")
-    private List<Card> cardList;
+    @ManyToMany
+    @JoinTable(
+            name = "card_owner",
+            joinColumns = @JoinColumn(name = "id_user"),
+            inverseJoinColumns = @JoinColumn(name = "id_card"))
+    List<Card> ownedCards = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Market> listing;
+
+    public void addToOwnedCards(Card card) {
+        ownedCards.add(card);
+    }
 
 }

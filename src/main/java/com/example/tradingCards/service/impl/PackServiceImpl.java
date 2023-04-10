@@ -16,13 +16,12 @@ public class PackServiceImpl implements PackService {
 
 
     @Override
-    public void createPack(String name, String description, Integer size, Double chance, Double price) {
+    public void createPack(String name, String description, Integer size, Double price) {
 
         Pack newPack = new Pack();
         newPack.setName(name);
         newPack.setDescription(description);
         newPack.setSize(size);
-        newPack.setChance(chance);
         newPack.setPrice(price);
         packRepository.save(newPack);
     }
