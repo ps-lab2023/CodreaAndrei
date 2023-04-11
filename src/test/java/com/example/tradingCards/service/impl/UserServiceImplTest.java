@@ -40,7 +40,7 @@ class UserServiceImplTest {
         user.setPassword("1234");
         user.setRole(User.Type.ADMIN);
 
-        userService.createUser(user.getRole(), "John Two", "", User.Type.REGULAR);
+        userService.createUser(user.getRole(), "John2", "John Two","", User.Type.REGULAR);
 
         assertThat(userRepository.findFirstByName("John Two")).isNotNull();
 
@@ -49,7 +49,7 @@ class UserServiceImplTest {
         user.setPassword("1234");
         user.setRole(User.Type.REGULAR);
 
-        userService.createUser(user.getRole(), "John Four", "", User.Type.REGULAR);
+        userService.createUser(user.getRole(), "John4","John Four", "", User.Type.REGULAR);
 
         assertThat(userRepository.findFirstByName("John Four")).isNull();
     }
