@@ -8,7 +8,9 @@ import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,23 +23,25 @@ public class Card {
 
     private String type;
     private String position;
+
+
     /*
-    private Integer pace;
-    private Integer dribbling;
-    private Integer shoot;
-    private Integer defending;
-    private Integer passing;
-    private Integer physical;*/
-    private  Double overall;
-    private Double minPrice;
-    private Double maxPrice;
+        private Integer pace;
+        private Integer dribbling;
+        private Integer shoot;
+        private Integer defending;
+        private Integer passing;
+        private Integer physical;*/
+    private  int overall;
+    private int minPrice;
+    private int maxPrice;
     private Double chance;
 
     @ManyToMany(mappedBy = "ownedCards")
     private List<User> owners;
 
     @ManyToMany (mappedBy = "cardList")
-    private List<Pack> packList;
+    private List<Pack> packList = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Player player;
@@ -53,4 +57,20 @@ public class Card {
         owners.add(user);
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", position='" + position + '\'' +
+                ", overall=" + overall +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", chance=" + chance +
+                ", owners=" + owners +
+                //", packList=" + packList +
+                ", player=" + player +
+                ", listing=" + listing +
+                '}';
+    }
 }

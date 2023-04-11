@@ -24,6 +24,7 @@ public class User {
     private String username;
     private String name;
     private String password;
+    private int balance;
 
     public enum Type {
         REGULAR,

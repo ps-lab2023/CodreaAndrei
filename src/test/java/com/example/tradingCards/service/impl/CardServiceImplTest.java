@@ -22,13 +22,13 @@ class CardServiceImplTest {
 
     @Test
     void createCard() {
-        cardService.createCard("Test", "ST", 0.0, 100.0);
+        cardService.createCard("Test", "ST", 0, 100);
         assertThat(cardRepository.findFirstByType("Test")).isNotNull();
     }
 
     @Test
     void deleteCardById() {
-        cardService.deleteCardById(1);
+        cardService.deleteCardById(1L);
         assertThat(cardRepository.findFirstById(1)).isNull();
     }
 }

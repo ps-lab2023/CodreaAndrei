@@ -12,6 +12,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @EntityScan
 @EnableJpaRepositories
 @SpringBootApplication
@@ -58,6 +63,7 @@ public class TradingCardsApplication {
 			admin.setName("Admin1");
 			admin.setPassword("1234");
 			admin.setRole(User.Type.ADMIN);
+			admin.setBalance(10);
 			userRepository.save(admin);
 
 			UserDTO adminDTO = userService.login("admin1", "1234");
@@ -71,6 +77,48 @@ public class TradingCardsApplication {
 
 			//userService.deleteUserById(3L);
 			userService.deleteUserById(200L);
+
+			//Cards
+			Card card = new Card();
+			card.setType("Gold");
+			card.setPosition("ST");
+			card.setMaxPrice(200);
+			card.setMinPrice(100);
+			card.setChance(0.5);
+			card.setOverall(90);
+			cardRepository.save(card);
+
+			Card card1 = new Card();
+			card1.setType("Silver");
+			card1.setPosition("GK");
+			card1.setMaxPrice(5000);
+			card1.setMinPrice(10);
+			card1.setChance(0.7);
+			card1.setOverall(74);
+			cardRepository.save(card1);
+
+			//Packs
+			Pack pack= new Pack();
+			pack.setPrice(5000);
+			pack.setName("Regular pack");
+			pack.setDescription("Desc");
+			List<Card> cardList = new ArrayList<>();
+			cardList.add(card);
+			cardList.add(card1);
+			pack.setCardList(cardList);
+			packRepository.save(pack);
+
+			Pack pack1 = new Pack();
+
+			List<Pack> packList = new ArrayList<>();
+			packList.add(pack);
+			card.setPackList(packList);
+			cardRepository.save(card);
+			System.out.println("Card packList: " + card.getPackList());
+			System.out.println("Pack cardList: " + pack.getCardList());
+			admin.getOwnedCards().addAll(Arrays.asList(card, card1));
+			System.out.println("Admin: " + admin);
+
 
 		};
 	}

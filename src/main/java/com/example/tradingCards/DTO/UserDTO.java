@@ -15,6 +15,7 @@ public class UserDTO {
     private String username;
     private String name;
     private String password;
+    private int balance;
     // Enum from User might need to be included
     private User.Type role;
 

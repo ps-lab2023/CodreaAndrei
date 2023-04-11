@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface PackService {
 
-    void createPack(String name, String description, Integer size, Double price);
+    void createPack(String name, String description, int price);
     void deletePack(String name);
 }
