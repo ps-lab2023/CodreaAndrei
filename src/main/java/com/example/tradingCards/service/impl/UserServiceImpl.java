@@ -1,40 +1,68 @@
 package com.example.tradingCards.service.impl;
 
+import com.example.tradingCards.DTO.UserDTO;
+import com.example.tradingCards.mapper.UserMapper;
 import com.example.tradingCards.model.User;
 import com.example.tradingCards.repository.UserRepository;
 import com.example.tradingCards.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
-    public UserServiceImpl (UserRepository userRepository){
+    public UserServiceImpl (UserRepository userRepository, UserMapper userMapper){
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
+
     @Override
-    public int login(String name, String password) {
+    public UserDTO findById(Long Id) {
+        User user = userRepository.findById(Id)
+                .orElseThrow(()
+                        ->
+                        new IllegalArgumentException("Invalid id"));
+        return  userMapper.mapModelToDto(user);
+    }
 
-        User user = userRepository.findFirstByName(name);
+    @Override
+    public List<UserDTO> findAll() {
+        return userRepository.findAll().
+                stream().
+                map(userMapper::mapModelToDto).
+                collect(Collectors.toList());
+    }
 
-        //check if user exists
-        if(user == null)
-            return -2;
+    @Override
+    public UserDTO login(String username, String password) {
+        try {
+            final User user = userRepository.findByUsernameAndPassword(username, password)
+                    .<EntityNotFoundException>orElseThrow(()
+                            ->
+                    {
+                        throw new EntityNotFoundException("Username or password is incorrect");
+                    });
+            System.out.println("Successful login");
+            return userMapper.mapModelToDto(user);
 
-        //check password
-        if (user.getPassword().equals(password)) {
-            return 0;
-        } else {
-            return -1;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
         }
 
+
+        return null;
     }
 
     @Override
-    public void createUser(User.Type role, String newName, String newPassword, User.Type newRole) {
+    public void createUser(User.Type role, String newUsername, String newName, String newPassword, User.Type newRole) {
 
         if(role != User.Type.ADMIN) {
             System.out.println("Not an admin!");
@@ -42,6 +70,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = new User();
+        newUser.setUsername(newUsername);
         newUser.setName(newName);
         newUser.setPassword(newPassword);
         newUser.setRole(newRole);
@@ -57,6 +86,22 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.delete(userRepository.findFirstByName(name));
+    }
+
+    @Override
+    public void deleteUserById(Long Id) {
+        try {
+            final User user = userRepository.findById(Id)
+                    .orElseThrow(() ->
+                    {
+                        throw new EntityNotFoundException("There is no user with Id: " + Id);
+                    });
+            userRepository.delete(user);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 

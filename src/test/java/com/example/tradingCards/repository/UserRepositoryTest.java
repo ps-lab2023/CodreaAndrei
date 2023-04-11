@@ -23,6 +23,7 @@ class UserRepositoryTest {
     void findFirstByName() {
 
         User user = new User();
+        user.setUsername("john");
         user.setName("John");
         userRepository.save(user);
 

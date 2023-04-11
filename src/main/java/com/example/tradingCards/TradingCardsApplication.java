@@ -1,5 +1,6 @@
 package com.example.tradingCards;
 
+import com.example.tradingCards.DTO.UserDTO;
 import com.example.tradingCards.model.*;
 import com.example.tradingCards.repository.*;
 import com.example.tradingCards.service.CardService;
@@ -39,34 +40,37 @@ public class TradingCardsApplication {
 
 			//User login
 			User user = new User();
+			user.setUsername("user1");
 			user.setName("User1");
 			user.setPassword("1234");
 			user.setRole(User.Type.REGULAR);
 			userRepository.save(user);
 
-			int loginValue = userService.login("User1", "1234");
-			checkLogin(loginValue);
+			userService.login("user1", "1234");
 
-			loginValue = userService.login("User", "");
-			checkLogin(loginValue);
+
+			userService.login("User", "");
+
 
 			//Admin actions
 			User admin = new User();
+			admin.setUsername("admin1");
 			admin.setName("Admin1");
 			admin.setPassword("1234");
 			admin.setRole(User.Type.ADMIN);
 			userRepository.save(admin);
 
-			loginValue = userService.login("Admin1", "1234");
-			if (loginValue >= 0){
-				userService.createUser(admin.getRole(), "User2", "aaa", User.Type.REGULAR);
-				int loginValue2 = userService.login("User2", "aaa");
-				checkLogin(loginValue2);
+			UserDTO adminDTO = userService.login("admin1", "1234");
+			if (adminDTO != null){
+				userService.createUser(admin.getRole(), "admin","User2", "aaa", User.Type.REGULAR);
+				userService.login("admin", "aaa");
+
 
 				userService.deleteUser(admin.getRole(), "User1");
 			}
 
-
+			//userService.deleteUserById(3L);
+			userService.deleteUserById(200L);
 
 		};
 	}
