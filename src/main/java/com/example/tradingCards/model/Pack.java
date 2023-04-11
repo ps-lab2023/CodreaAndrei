@@ -18,17 +18,16 @@ public class Pack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long Id;
 
     private String name;
     private String description;
-    private Integer size;
-    private Double price;
+    private int price;
 
     @ManyToMany
     @JoinTable(
         name = "pack_content",
         joinColumns = @JoinColumn(name = "id_pack"),
         inverseJoinColumns = @JoinColumn(name = "id_card"))
-    List<Card> cardList;
+    List<Card> cardList = new ArrayList<>();
 }

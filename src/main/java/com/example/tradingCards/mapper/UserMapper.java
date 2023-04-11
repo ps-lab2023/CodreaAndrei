@@ -14,6 +14,7 @@ public class UserMapper {
         userDTO.setName(user.getName());
         userDTO.setPassword(user.getPassword());
         userDTO.setRole(user.getRole());
+        userDTO.setBalance(user.getBalance());
 
         return userDTO;
     }

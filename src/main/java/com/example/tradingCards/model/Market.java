@@ -23,7 +23,7 @@ public class Market {
     private Card card;
 
 
-    private Double price;
+    private int price;
 
 
 

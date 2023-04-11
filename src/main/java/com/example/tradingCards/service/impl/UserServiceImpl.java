@@ -6,6 +6,7 @@ import com.example.tradingCards.model.User;
 import com.example.tradingCards.repository.UserRepository;
 import com.example.tradingCards.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(Id)
                 .orElseThrow(()
                         ->
-                        new IllegalArgumentException("Invalid id"));
+                        new IllegalArgumentException("Invalid user id"));
         return  userMapper.mapModelToDto(user);
     }
 
@@ -59,6 +60,20 @@ public class UserServiceImpl implements UserService {
 
 
         return null;
+    }
+
+    @Override
+    public void modifyBalance(User user, int sum) {
+        try {
+            int currentBalance = user.getBalance();
+            int newBalance = currentBalance + sum;
+            if (newBalance < 0){
+                throw new RuntimeException("Balance for user " + user.getUsername() + " is too small");
+            }
+            user.setBalance(newBalance);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
